@@ -67,13 +67,13 @@ class BayesModel:
         for i in range(N):
             p={0:0.0,1:0.0,2:0.0,3:0.0,4:0.0,5:0.0,6:0.0,7:0.0,8:0.0,9:0.0}
             img=np.ndarray.flatten(test_image[i])
-            for type in range(10):
-                res=math.log(self.PW[type])
+            for classification in range(10):
+                res=math.log(self.PW[classification])
                 for k in range(self.dim):
                     if img[k]==1:
-                        res = res +math.log( self.PJW[type][k])
+                        res = res +math.log( self.PJW[classification][k])
                     else:
-                        res = res+math.log  (1-self.PJW[type][k])
+                        res = res+math.log  (1-self.PJW[classification][k])
                 p[type]=res
             sortted_p=sorted(p.items(), key=lambda x: x[1], reverse=True)
             print("Picture_Num : %d , predict result is %d , real result is %d ."%(i,int(sortted_p[0][0]),int(test_label[i])))
