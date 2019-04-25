@@ -37,5 +37,6 @@ for i in range(len(test_images)):
 
 bayesDemo=bayesModel.BayesModel(train_images_step1,train_labels,28*28)
 bayesDemo.train_model()
+# bayesDemo.saveModelToFile("full_dataset_train")
 ACC=bayesDemo.predict(test_images_step1,test_labels)
 print("Predict acc is %f ."%ACC)

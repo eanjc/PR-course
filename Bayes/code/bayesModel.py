@@ -1,6 +1,8 @@
 import numpy as np
 from code import imgProcess
 import math
+import pickle
+
 class BayesModel:
     def __init__(self,train_image,train_label,dim):
         self.train_image=train_image
@@ -74,7 +76,7 @@ class BayesModel:
                         res = res +math.log( self.PJW[classification][k])
                     else:
                         res = res+math.log  (1-self.PJW[classification][k])
-                p[type]=res
+                p[classification]=res
             sortted_p=sorted(p.items(), key=lambda x: x[1], reverse=True)
             print("Picture_Num : %d , predict result is %d , real result is %d ."%(i,int(sortted_p[0][0]),int(test_label[i])))
             if int(sortted_p[0][0])==int(test_label[i]):
@@ -82,6 +84,44 @@ class BayesModel:
 
         acc=correct/N
         return acc
+
+    def saveModelToFile(self,filename):
+        if self.hasModel==False:
+            print("Model hasn't trained. CAN NOT SAVE.")
+            return
+        prefix="../model/"
+        suffix=".pkl"
+
+        f_pw=prefix+filename+"-pw"+suffix
+        f_pjw=prefix+filename+"-pjw"+suffix
+
+        with open(f_pw,'wb') as f__pw:
+            with open(f_pjw,'wb') as f__pjw:
+                picklestring = pickle.dump(self.PW, f__pw)
+                picklestring = pickle.dump(self.PJW, f__pjw)
+        print("Model has saved .")
+
+        return
+
+    def loadModelFromFile(self,filename):
+        prefix="../model/"
+        suffix=".pkl"
+
+        f_pw=prefix+filename+"-pw"+suffix
+        f_pjw=prefix+filename+"-pjw"+suffix
+
+        with open(f_pw,'rb') as f__pw:
+            with open(f_pjw,'rb') as f__pjw:
+
+                self.PW=pickle.load(f__pw)
+                self.PJW=pickle.load(f__pjw)
+
+        self.hasModel=True
+        print("Model has loaded .")
+        return
+
+
+
 
 
 
