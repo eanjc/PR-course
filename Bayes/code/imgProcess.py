@@ -50,7 +50,7 @@ class ImgProcess:
         if c_size==-1:
             c_size=r_size
         if self.num_rows%r_size!=0 or self.num_cols%c_size!=0:
-            print("Warning: MaxPooling will lose some data!")
+            print("Warning: MinPooling will lose some data!")
         res_r_size=self.num_rows/r_size
         res_c_size=self.num_cols/c_size
         res=np.zeros(shape=(int(self.num_rows/r_size),int(self.num_cols/c_size)))
@@ -70,7 +70,7 @@ class ImgProcess:
         if c_size==-1:
             c_size=r_size
         if self.num_rows%r_size!=0 or self.num_cols%c_size!=0:
-            print("Warning: MaxPooling will lose some data!")
+            print("Warning: AvgPooling will lose some data!")
         res_r_size=self.num_rows/r_size
         res_c_size=self.num_cols/c_size
         res=np.zeros(shape=(int(self.num_rows/r_size),int(self.num_cols/c_size)))
