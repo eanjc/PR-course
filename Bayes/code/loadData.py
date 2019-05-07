@@ -162,14 +162,57 @@ if __name__ == '__main__':
     train_labels = load_train_labels()
     # test_images = load_test_images()
     # test_labels = load_test_labels()
+    dd=imgProcess.ImgProcess()
+    dd.num_cols=26
+    dd.num_rows=26
 
     # 查看前十个数据及其标签以读取是否正确
     for i in range(10):
-        print(train_images[i])
+        # print(train_images[i])
         print(train_labels[i])
-        #plt.imshow(train_images[i], cmap='gray')
-        #plt.imshow(imgProcess.ImgProcess().gray2bw(train_images[i],80), cmap='gray')
-        plt.imshow(imgProcess.ImgProcess().minPooling(imgProcess.ImgProcess().gray2bw(train_images[i],80), 2), cmap='gray')
+        plt.imshow(train_images[i], cmap='gray')
+        plt.pause(0.000001)
+        plt.show()
+
+        plt.imshow(imgProcess.ImgProcess().gray2bw(train_images[i],90), cmap='gray')
+        # plt.imshow(imgProcess.ImgProcess().minPooling(imgProcess.ImgProcess().gray2bw(train_images[i],90), 2), cmap='gray')
+        plt.imshow(dd.gray2bw(imgProcess.ImgProcess().sobel(train_images[i]),T=180),cmap='gray')
+        # print (imgProcess.ImgProcess().sobel(imgProcess.ImgProcess().gray2bw(train_images[i],90)))
+        # plt.imshow(dd.gray2bw(imgProcess.ImgProcess().sobel(imgProcess.ImgProcess().gray2bw(train_images[i],90)), T=180), cmap='gray')
         plt.pause(0.000001)
         plt.show()
     print('done')
+
+    img11=imgProcess.ImgProcess().gray2bw(train_images[5],90)
+    img21=imgProcess.ImgProcess().gray2bw(train_images[9],90)
+
+    img12=dd.gray2bw(imgProcess.ImgProcess().sobel(train_images[5]),T=180)
+    img22=dd.gray2bw(imgProcess.ImgProcess().sobel(train_images[9]),T=180)
+
+    res1 = np.zeros(shape=(28, 28))
+    res2= np.zeros(shape=(26, 26))
+    c1=0
+    c2=0
+    for i in range(28):
+        for j in range(28):
+            if img11[i][j]!=img21[i][j]:
+                res1[i][j]=255
+                c1+=1
+            else:
+                res1[i][j]=0
+    print ("c1= %d"%c1)
+
+    plt.imshow(res1,cmap='gray')
+    plt.show()
+
+    for i in range(26):
+        for j in range(26):
+            if img12[i][j]!=img22[i][j]:
+                res2[i][j]=255
+                c2+=1
+            else:
+                res2[i][j]=0
+    print ("c2= %d"%c2)
+
+    plt.imshow(res2,cmap='gray')
+    plt.show()

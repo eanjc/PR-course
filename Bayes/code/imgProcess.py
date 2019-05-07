@@ -1,5 +1,5 @@
 import numpy as np
-
+import math
 
 class ImgProcess:
     def __init__(self):
@@ -85,4 +85,29 @@ class ImgProcess:
                 res[i][j]=max_value
 
         return res
+
+    # TODO  边缘检测算子
+    def sobel(self,img):
+        res_r_size=self.num_rows-2
+        res_c_size=self.num_cols-2
+        res = np.zeros(shape=(self.num_rows-2, self.num_cols-2))
+        mmax=0
+        # GX GY G
+        for i in range(int(res_r_size)):
+            for j in range(int(res_c_size)):
+                gx=-1*img[i][j]+1*img[i][j+2]-2*img[i+1][j]+2*img[i+1][j+2]-1*img[i+2][j]+1*img[i+2][j+2]
+                gy =-1*img[i][j]-2*img[i][j+1]-img[i][j+2]+img[i+2][j]+2*img[i+2][j+1]+img[i+2][j+2]
+                g=int(math.sqrt(gx*gx+gy*gy))
+                if g>mmax:
+                    mmax=g
+                res[i][j]=g
+
+        t=255/mmax
+        for i in range(int(res_r_size)):
+            for j in range(int(res_c_size)):
+                res[i][j]=int(res[i][j]*t)
+
+
+        return res
+
 

@@ -12,12 +12,20 @@ class BayesModel:
         self.PW=np.empty(10,dtype=np.float)
         self.PJW=np.empty(shape=(10, self.dim), dtype=np.float)
 
-    def train_model(self):
+    def train_model(self,n=-1):
         NI={0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0}
+
         if len(self.train_image)!=len(self.train_label):
             print("Number of train_image is not equal to number of train_label !")
             return
+
         N=len(self.train_label)
+        if n>-1:
+            if n>N:
+                print ("Do Not Have Enough Images To Train , N = %d ."%N)
+            else:
+                N=n
+                print ("N = %d"%N)
         for lable in self.train_label:
             NI[int(lable)]+=1
         PNI={}
