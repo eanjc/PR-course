@@ -1,0 +1,33 @@
+C:\Anaconda3\envs\tensorflow\python.exe "C:/document/PR Course/Bayes/code/svmDemo.py"
+魔数:2049, 图片数量: 60000张
+已解析 10000张
+已解析 20000张
+已解析 30000张
+已解析 40000张
+已解析 50000张
+已解析 60000张
+魔数:2049, 图片数量: 10000张
+已解析 10000张
+File has loaded .
+g=0.0001
+Accuracy = 91.46% (9146/10000) (classification)
+Accuracy = 90.85% (54510/60000) (classification)
+
+g=0.0002
+Accuracy = 92.42% (9242/10000) (classification)
+Accuracy = 91.895% (55137/60000) (classification)
+
+g=default
+Accuracy = 94.4% (9440/10000) (classification)
+Accuracy = 94.61% (56766/60000) (classification)
+
+g=0.005
+Accuracy = 96.97% (9697/10000) (classification)
+Accuracy = 97.7767% (58666/60000) (classification)
+
+g=0.01
+Accuracy = 97.79% (9779/10000) (classification)
+Accuracy = 99.035% (59421/60000) (classification)
+
+g=0.02
+
