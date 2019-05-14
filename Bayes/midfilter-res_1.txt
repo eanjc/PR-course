@@ -1,0 +1,2 @@
+On train_set 0.833917
+On test_set 0.842800
