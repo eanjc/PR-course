@@ -86,7 +86,7 @@ class BayesModel:
                         res = res+math.log  (1-self.PJW[classification][k])
                 p[classification]=res
             sortted_p=sorted(p.items(), key=lambda x: x[1], reverse=True)
-            print("Picture_Num : %d , predict result is %d , real result is %d ."%(i,int(sortted_p[0][0]),int(test_label[i])))
+            # print("Picture_Num : %d , predict result is %d , real result is %d ."%(i,int(sortted_p[0][0]),int(test_label[i])))
             if int(sortted_p[0][0])==int(test_label[i]):
                 correct+=1
 

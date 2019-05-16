@@ -106,8 +106,22 @@ class ImgProcess:
         for i in range(int(res_r_size)):
             for j in range(int(res_c_size)):
                 res[i][j]=int(res[i][j]*t)
-
-
         return res
+
+    def midFilter(self,img,window_size=3):
+        res_r_size=self.num_rows-window_size+1
+        res_c_size=self.num_cols-window_size+1
+        res = np.zeros(shape=(res_r_size, res_c_size))
+
+        for i in range(int(res_r_size)):
+            for j in range(int(res_c_size)):
+                tmp=[]
+                for p in range(window_size):
+                    for q in range(window_size):
+                        tmp.append(img[i+p][j+q])
+                tmp.sort()
+                res[i][j]=tmp[int((window_size*window_size/2)+1)]
+        return res
+
 
 
