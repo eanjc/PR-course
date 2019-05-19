@@ -66,28 +66,28 @@ for i in range(len(test_y)):
 
 # Non CNN Model
 BATCH_SIZE=2000
-x=tf.placeholder(tf.float32,[None,28*28])
-y_=tf.placeholder(tf.float32,[None,10])
-y_label=tf.placeholder(tf.int64,[None])
+x=tf.placeholder(tf.float32,[None,28*28],name="x-input")
+y_=tf.placeholder(tf.float32,[None,10],name="y-train_label_one_hot")
+y_label=tf.placeholder(tf.int64,[None],name="y_label")
 
-w1=tf.Variable(tf.random_normal([28*28,1024],stddev=1,seed=1))
-b1=tf.Variable(tf.random_normal([1024],stddev=1,seed=1))
+w1=tf.Variable(tf.random_normal([28*28,1024],stddev=1,seed=1),name="w1")
+b1=tf.Variable(tf.random_normal([1024],stddev=1,seed=1),name="b1")
 
 t1=tf.nn.relu(tf.matmul(x,w1)+b1)
 
-w2=tf.Variable(tf.random_normal([1024,1280],stddev=1,seed=1))
-b2=tf.Variable(tf.random_normal([1280],stddev=1,seed=1))
+w2=tf.Variable(tf.random_normal([1024,1280],stddev=1,seed=1,name="w2"))
+b2=tf.Variable(tf.random_normal([1280],stddev=1,seed=1),name="b2")
 
 t2=tf.nn.relu(tf.matmul(t1,w2)+b2)
 
-w3=tf.Variable(tf.random_normal([1280,10],stddev=1,seed=1))
-b3=tf.Variable(tf.random_normal([10],stddev=1,seed=1))
+w3=tf.Variable(tf.random_normal([1280,10],stddev=1,seed=1),name="w3")
+b3=tf.Variable(tf.random_normal([10],stddev=1,seed=1),name="b3")
 
 t3=tf.nn.relu(tf.matmul(t2,w3)+b3)
 
-bs=tf.Variable(tf.random_normal([10],stddev=1,seed=1))
+bs=tf.Variable(tf.random_normal([10],stddev=1,seed=1),name="bs")
 yy=tf.nn.softmax(t3+bs)
-
+print(yy)
 reg=tf.contrib.layers.l2_regularizer(0.0001)
 reg_loss=reg(w1)+reg(w2)+reg(w3)
 
@@ -95,9 +95,9 @@ cross_entropy=-tf.reduce_mean(y_*tf.log(tf.clip_by_value(yy,1e-10,1.0))+(1-y_)*t
 loss=cross_entropy+reg_loss
 
 global_step=tf.Variable(0,trainable=False)
-learning_rate=tf.train.exponential_decay(0.5,global_step,60000/BATCH_SIZE,0.99,staircase=True)
-
-learning_rate_slow=tf.train.exponential_decay(0.0001,global_step,100,0.95)
+# learning_rate=tf.train.exponential_decay(0.5,global_step,60000/BATCH_SIZE,0.99,staircase=True)
+#
+# learning_rate_slow=tf.train.exponential_decay(0.0001,global_step,100,0.95)
 
 train_step=tf.train.AdamOptimizer(0.0005).minimize(loss,global_step=global_step)
 # train_step_slow=tf.train.AdamOptimizer(0.00005).minimize(loss,global_step=global_step)
@@ -110,8 +110,9 @@ is_correct_test=tf.equal(tf.argmax(yy,1),tf.argmax(test_y_one_hot,1))
 acc_calc_test_step=tf.reduce_mean(tf.cast(is_correct_test,tf.float32))
 acc_calc_train_step=tf.reduce_mean(tf.cast(is_correct_train,tf.float32))
 
+exit(1)
 saver=tf.train.Saver()
-save_path="../model/tf_model_1.ckpl"
+save_path="../model/tf_model_NL_1.ckpl"
 acc1=0
 acc2=0
 acc_avg=0
@@ -132,8 +133,8 @@ with tf.Session() as sess:
         s=(i*BATCH_SIZE)%60000
         e=(i*BATCH_SIZE)%60000+BATCH_SIZE
         sess.run(train_step,feed_dict={x:train_x[s:e],y_:train_y_one_hot[s:e]})
-        
-        
+
+
         if i % 100 ==0:
             loss_current=sess.run(loss,feed_dict={x:train_x,y_:train_y_one_hot})
             print ("After %d training steps,current loss is %f ."%(i,loss_current))
@@ -141,16 +142,16 @@ with tf.Session() as sess:
             print ("After %d training steps,current acc on train_set is %f ."%(i,acc1))
             acc2=sess.run(acc_calc_test_step,feed_dict={x:test_x,y_:test_y_one_hot})
             print ("After %d training steps,current acc on test_set is %f ."%(i,acc2))
-            lr=sess.run(learning_rate)
+            # lr=sess.run(learning_rate)
             # if T==0:
             #     lr=sess.run(learning_rate)
             #     print ("After %d training steps,current learning rate is %f ."%(i,lr))
             # else:
             #     lr=sess.run(learning_rate_slow)
             # # print ("After %d training steps,current learning rate is %f ."%(i,lr))
-            
+            lr=0.0005
             print ("After %d training steps,current learning rate is %f ."%(i,lr))
-            
+
         if i%1000==0:
             saver.save(sess,save_path,global_step=global_step)
     
